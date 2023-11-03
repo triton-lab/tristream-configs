@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Limit to as2-streaming-user
+if [ ! "$HOME" = "/home/as2-streaming-user" ]; then
+  echo "Home: $HOME"
+  return 0
+fi
+
 source_dir="$HOME"
 target_dir="$HOME/MyFiles/HomeFolder/configs"
 
@@ -13,6 +19,12 @@ fi
 if [ ! -d "$target_dir" ]; then
   echo "Target directory does not exist: $target_dir" >&2
   return 1
+else
+  owner=$(stat -c '%U' "$target_dir")
+  if [ "$owner" = "root" ]; then
+    echo "The owner of the target directory is root: $target_dir"
+    return 1
+  fi
 fi
 
 # Delete dot files in target directory if their corresponding symbolic links or files are absent in source directory

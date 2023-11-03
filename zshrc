@@ -211,5 +211,11 @@ fi
 # Hide (base) in prompt at startup
 PS1="$(echo "$PS1" | sed 's/(base) //')"
 
+
 # Move to ~/MyFiles/HomeFolder as effective home
-[[ -d ~/MyFiles/HomeFolder ]] && cd ~/MyFiles/HomeFolder
+if [[ -d "$HOME/MyFiles/HomeFolder" ]]; then
+    owner=$(stat -c '%U' "$HOME/MyFiles/HomeFolder")
+    if [ "$owner" != "root" ]; then
+        cd "$HOME/MyFiles/HomeFolder" || return
+    fi
+fi

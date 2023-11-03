@@ -1,4 +1,4 @@
-#!/bin/bash
+# /etc/profile.d/conda.sh
 
 # ----------------------------------------------------------------
 # Put this in /etc/profile.d/conda.sh

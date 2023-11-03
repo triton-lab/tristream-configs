@@ -46,8 +46,13 @@ sudo bash Miniforge3-Linux-x86_64.sh -b -p /opt/miniforge3
 
 
 # Make pip available via conda
-sudo mv "$BASEDIR/conda.sh" /etc/profile.d/
+sudo cp "$BASEDIR/conda.sh" /etc/profile.d/
 source /etc/profile
+
+
+# Set the environment variables
+sudo cp "$BASEDIR/myenvvars.sh" /etc/profile.d/
+
 
 # Basic python packages via mamba
 mamba install ipython numpy pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab -y
@@ -168,11 +173,11 @@ channels:
 
 envs_dirs:
   - ~/.local/share/conda/envs
-  - /opt/miniforge/envs
+  - /opt/miniforge3/envs
 
 pkgs_dirs:
   - ~/.local/share/conda/pkgs
-  - /opt/miniforge/pkgs
+  - /opt/miniforge3/pkgs
 EOF
 
 

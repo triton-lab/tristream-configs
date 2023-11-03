@@ -1,4 +1,16 @@
-#!/bin/bash
+# /etc/skel/.profile
+
+# Limit to as2-streaming-user
+if [ "$HOME" != "/home/as2-streaming-user" ]; then
+  echo "Home: $HOME"
+  return 0
+fi
+
+
+# Create conda environment directories
+mkdir -p "$HOME/.local/share/conda/envs"
+mkdir -p "$HOME/.local/share/conda/pkgs"
+
 
 # Load dotfiles from the persistent storage
 # Define the source and target directories
@@ -9,6 +21,12 @@ target_dir="$HOME"
 if [ ! -d "$source_dir" ]; then
   echo "Source directory does not exist: $source_dir"
   return 1
+else
+  owner=$(stat -c '%U' "$source_dir")
+  if [ "$owner" = "root" ]; then
+    echo "The owner of the source directory is root: $source_dir"
+    return 1
+  fi
 fi
 
 # Change to the source directory
@@ -39,7 +57,3 @@ done
 
 echo "Symbolic links created successfully!"
 
-
-# Create conda environment directories
-mkdir -p ~/.local/share/conda/envs
-mkdir -p ~/.local/share/conda/pkgs
