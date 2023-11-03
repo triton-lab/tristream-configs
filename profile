@@ -3,7 +3,7 @@
 # Limit to as2-streaming-user
 if [ "$HOME" != "/home/as2-streaming-user" ]; then
   echo "Home: $HOME"
-  return 0
+  return
 fi
 
 
@@ -20,17 +20,11 @@ target_dir="$HOME"
 # Ensure the source directory exists
 if [ ! -d "$source_dir" ]; then
   echo "Source directory does not exist: $source_dir"
-  return 1
-else
-  owner=$(stat -c '%U' "$source_dir")
-  if [ "$owner" = "root" ]; then
-    echo "The owner of the source directory is root: $source_dir"
-    return 1
-  fi
+  return
 fi
 
 # Change to the source directory
-cd "$source_dir" || exit
+cd "$source_dir" || return
 
 # Loop over all dot files and directories in the source directory
 for item in .*; do
