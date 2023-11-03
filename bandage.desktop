@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Bandage
+Exec=/opt/bin/Bandage
+Icon=/tmp/icons/bandage-0.png
+Terminal=false
+Categories=Utility;

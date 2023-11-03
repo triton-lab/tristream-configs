@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=IGV
+Exec=/opt/bin/igv
+Icon=/tmp/icons/igv.png
+Terminal=false
+Categories=Utility;
