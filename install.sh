@@ -92,11 +92,7 @@ TOOLS=( "$(cat _tools_condax.txt)" )
 for _tool in ${TOOLS[*]}; do
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
     # retry if nonzero exit status occurs
-    if [[ ! ($(sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG")) ]]; then
-        echo "condax retrying... $_tool" | tee -a "$CONDAX_LOG"
-        sudo /opt/bin/condax remove "$_tool" | tee -a "$CONDAX_LOG"
-        sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
-    fi
+    sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG
     sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 done
 
