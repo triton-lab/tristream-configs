@@ -67,7 +67,7 @@ sudo cp -f "$BASEDIR/myenvvars.sh" /etc/profile.d/
 
 
 # Basic python packages via mamba
-sudo "$CONDA_PREFIX"/bin/mamba install -y -p "$CONDA_PREFIX" numpy ipython # pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab
+sudo "$CONDA_PREFIX"/bin/mamba install -y -p "$CONDA_PREFIX" numpy ipython pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab
 
 
 # pipx
