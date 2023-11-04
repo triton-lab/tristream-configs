@@ -88,11 +88,29 @@ sudo mkdir -p "$CONDAX_PREFIX_DIR"
 wget -N https://raw.githubusercontent.com/yamaton/test-binder/main/binder/_tools_condax.txt
 
 CONDAX_LOG="condax_install_log.txt"
+sudo rm -f "$CONDAX_LOG"
 TOOLS=( "$(cat _tools_condax.txt)" )
+max_attempts=3
 for _tool in ${TOOLS[*]}; do
+    attempt_num=1
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
-    # retry if nonzero exit status occurs
-    sudo -E /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
+    while [ $attempt_num -le $max_attempts ]; do
+        echo "Attempt $attempt_num of $max_attempts: Installing $_tool"
+        if sudo -E /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"; then
+            echo "Installation succeeded: $_tool" | tee -a "$CONDAX_LOG"
+            break
+        else
+            echo "Installation failed: $_tool" | tee -a "$CONDAX_LOG"
+            if [ $attempt_num -eq $max_attempts ]; then
+                echo "👎👎👎Max attempts reached. Giving up: $_tool" | tee -a "$CONDAX_LOG"
+                sudo -E /opt/bin/condax remove 2>&1 | tee -a "$CONDAX_LOG"
+            else
+                echo "Retrying in 5 seconds...: $_tool" | tee -a "$CONDAX_LOG"
+                sleep 5
+            fi
+        fi
+        attempt_num=$((attempt_num + 1))
+    done
     sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 done
 
