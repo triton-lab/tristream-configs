@@ -75,7 +75,7 @@ export PIPX_HOME=/opt/share/pipx
 export PIPX_BIN_DIR=/opt/bin
 sudo mkdir -p "$PIPX_HOME"
 sudo mkdir -p "$PIPX_BIN_DIR"
-sudo "$CONDA_PREFIX"/bin/pip install --prefix "$CONDA_PREFIX" --force pipx
+sudo "$CONDA_PREFIX"/bin/pip install --prefix "$CONDA_PREFIX" --force-reinstall pipx
 sudo -E "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/condax
 
 
