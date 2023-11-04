@@ -215,7 +215,7 @@ PS1="$(echo "$PS1" | sed 's/(base) //')"
 # Move to ~/MyFiles/HomeFolder as effective home
 if [[ -d "$HOME/MyFiles/HomeFolder" ]]; then
     owner=$(stat -c '%U' "$HOME/MyFiles/HomeFolder/")
-    if [ "$owner" != "root" ]; then
+    if [ "$owner" = "as2-streaming-user" ]; then
         cd "$HOME/MyFiles/HomeFolder" || return
     fi
 fi
