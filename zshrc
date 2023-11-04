@@ -2,12 +2,6 @@
 # shellcheck disable=SC2034
 
 ## =======================================
-##        Jump to Directories
-## =======================================
-alias repos='~/repos'
-
-
-## =======================================
 ##            Alias Commands
 ## =======================================
 alias ls="ls --color"
@@ -208,7 +202,7 @@ fi
 PS1="$(echo "$PS1" | sed 's/(base) //')"
 
 
-# Move to ~/MyFiles/HomeFolder as effective home
+# cd to ~/MyFiles/HomeFolder as its the persistent home folder
 if [[ -d "$HOME/MyFiles/HomeFolder" ]]; then
     owner=$(stat -c '%U' "$HOME/MyFiles/HomeFolder/")
     if [ "$owner" = "as2-streaming-user" ]; then
