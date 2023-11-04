@@ -67,7 +67,7 @@ sudo cp -f "$BASEDIR/myenvvars.sh" /etc/profile.d/
 
 
 # Basic python packages via mamba
-sudo "$CONDA_PREFIX"/bin/mamba install -p "$CONDA_PREFIX" ipython numpy pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab -y
+sudo "$CONDA_PREFIX"/bin/mamba install -y -p "$CONDA_PREFIX" numpy ipython # pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab
 
 
 # pipx
@@ -92,7 +92,7 @@ TOOLS=( "$(cat _tools_condax.txt)" )
 for _tool in ${TOOLS[*]}; do
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
     # retry if nonzero exit status occurs
-    sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG
+    sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
     sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 done
 
