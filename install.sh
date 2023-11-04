@@ -200,3 +200,5 @@ wget -N https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
 sudo cp -f .less_termcap /etc/skel/
 
 ## <<<<------------------------------------------------------------------------
+
+echo "Done."
