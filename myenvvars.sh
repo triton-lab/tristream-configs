@@ -1,3 +1,3 @@
 # /etc/profile.d/myenvvars.sh
-echo "export SHELL=/bin/zsh"
-echo "export DSHELL=/bin/zsh"
+export SHELL=/bin/zsh
+export DSHELL=/bin/zsh

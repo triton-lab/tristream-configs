@@ -62,7 +62,6 @@ sudo bash Miniforge3-Linux-x86_64.sh -b -p "$CONDA_PREFIX"
 sudo cp -f "$BASEDIR/conda.sh" /etc/profile.d/
 source /etc/profile
 
-
 # Set the environment variables
 sudo cp -f "$BASEDIR/myenvvars.sh" /etc/profile.d/
 
