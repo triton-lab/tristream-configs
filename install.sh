@@ -82,13 +82,12 @@ sudo -E "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/
 # condax
 export CONDAX_BIN_DIR=/opt/bin
 export CONDAX_PREFIX_DIR=/opt/share/condax/envs
-export CONDAX_HIDE_EXITCODE=1
 sudo mkdir -p "$CONDAX_BIN_DIR"
 sudo mkdir -p "$CONDAX_PREFIX_DIR"
 wget -N https://raw.githubusercontent.com/yamaton/test-binder/main/binder/_tools_condax.txt
 
 CONDAX_LOG="condax_install_log.txt"
-sudo rm -f "$CONDAX_LOG"
+rm -f "$CONDAX_LOG"
 TOOLS=( "$(cat _tools_condax.txt)" )
 max_attempts=3
 for _tool in ${TOOLS[*]}; do
@@ -111,7 +110,8 @@ for _tool in ${TOOLS[*]}; do
         fi
         attempt_num=$((attempt_num + 1))
     done
-    sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
+    sudo -E "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
+    sudo -E /opt/bin/micromamba clean --all --yes --force-pkgs-dirs
 done
 
 # Add blast to bandage package
