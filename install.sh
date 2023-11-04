@@ -138,7 +138,7 @@ sudo update-desktop-database
 ## Setup dotfiles in /etc/skel
 
 # .profile
-sudo cp -f "$BASEDIR/profile.sh" /etc/skel/.profile
+sudo cp -f "$BASEDIR/profile" /etc/skel/.profile
 
 
 # .bash_logout
