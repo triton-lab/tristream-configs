@@ -76,7 +76,7 @@ export PIPX_BIN_DIR=/opt/bin
 sudo mkdir -p "$PIPX_HOME"
 sudo mkdir -p "$PIPX_BIN_DIR"
 sudo "$CONDA_PREFIX"/bin/pip install --prefix "$CONDA_PREFIX" --force pipx
-sudo "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/condax
+sudo -E "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/condax
 
 
 # condax
@@ -92,16 +92,16 @@ TOOLS=( "$(cat _tools_condax.txt)" )
 for _tool in ${TOOLS[*]}; do
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
     # retry if nonzero exit status occurs
-    sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
+    sudo -E /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
     sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 done
 
 # Add blast to bandage package
-sudo /opt/bin/condax inject -c bioconda -n bandage blast
+sudo -E /opt/bin/condax inject -c bioconda -n bandage blast
 
 # qiime2
 wget -N https://data.qiime2.org/distro/core/qiime2-2023.7-py38-linux-conda.yml -O qiime2.yml
-sudo /opt/bin/condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
+sudo -E /opt/bin/condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
 rm -f qiime2.yml
 sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 
