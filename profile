@@ -33,19 +33,19 @@ for item in .*; do
     continue
   fi
 
-  # Define the source and target paths
-  source_path="$source_dir/$item"
-  target_path="$target_dir/$item"
+  # # Define the source and target paths
+  # source_path="$source_dir/$item"
+  # target_path="$target_dir/$item"
 
-  # If the target path already exists
-  if [ -f "$target_path" ] || [ -d "$target_path" ]; then
-    # Rename the existing file/directory with a .bak suffix
-    mv "$target_path" "${target_path}.bak"
-  fi
+  # # If the target path already exists
+  # if [ -f "$target_path" ] || [ -d "$target_path" ]; then
+  #   # Rename the existing file/directory with a .bak suffix
+  #   mv "$target_path" "${target_path}.bak"
+  # fi
 
   # sync with the persistent user data storage
   # [NOTE] prefer copy over symbolic ink because the persitent storage is not always available
-  rsync -av --no-links --include='.*' --exclude='*' "$source_path"/ "$target_path"
+  rsync -av --no-links --update --include='.*' --exclude='*' "$source_path"/ "$target_path"
 
 done
 
