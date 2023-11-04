@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
+
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 readonly BASEDIR
 
@@ -23,35 +28,43 @@ sudo yum install -y \
 
 
 # Cascadia Code fonts
-wget https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
-unzip CascadiaCode-2111.01.zip -d CascadiaCode
-sudo mkdir /usr/share/fonts/CascadiaMono
-sudo cp CascadiaCode/ttf/CascadiaMono*.ttf /usr/share/fonts/CascadiaMono/
-sudo fc-cache -f -
+FONT_PATH="/usr/share/fonts/CascadiaMono"
+if [ ! -d "$FONT_PATH" ]; then
+  wget -N https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+  unzip -d CascadiaCode -o CascadiaCode-2111.01.zip
+  sudo mkdir -p "$FONT_PATH"
+  sudo cp -f CascadiaCode/ttf/CascadiaMono*.ttf "$FONT_PATH"/
+  sudo fc-cache -f -
+fi
 
 
-# Firefox
-sudo amazon-linux-extras install firefox -y
+# Firefox (Checks if Firefox is installed before installation.)
+if ! command -v firefox &> /dev/null; then
+  sudo amazon-linux-extras install firefox -y
+fi
 
 
-# vscode
-wget https://update.code.visualstudio.com/1.84.0/linux-rpm-x64/stable -O vscode.rpm
-sudo yum localinstall vscode.rpm -y
+# vscode (Checks if Visual Studio Code is installed before installation.)
+if ! command -v code &> /dev/null; then
+  wget -N https://update.code.visualstudio.com/1.84.0/linux-rpm-x64/stable -O vscode.rpm
+  sudo yum localinstall vscode.rpm -y
+fi
 
 
 # miniforge
-wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
 sudo mkdir -p /opt
+sudo rm -rf /opt/miniforge3
 sudo bash Miniforge3-Linux-x86_64.sh -b -p /opt/miniforge3
 
 
 # Make pip available via conda
-sudo cp "$BASEDIR/conda.sh" /etc/profile.d/
+sudo cp -f "$BASEDIR/conda.sh" /etc/profile.d/
 source /etc/profile
 
 
 # Set the environment variables
-sudo cp "$BASEDIR/myenvvars.sh" /etc/profile.d/
+sudo cp -f "$BASEDIR/myenvvars.sh" /etc/profile.d/
 
 
 # Basic python packages via mamba
@@ -61,18 +74,19 @@ mamba install ipython numpy pandas matplotlib seaborn scikit-learn scikit-image 
 # pipx
 export PIPX_HOME=/opt/share/pipx
 export PIPX_BIN_DIR=/opt/bin
-mkdir -p "$PIPX_HOME"
-pip install pipx
-pipx install git+https://github.com/yamaton/condax
+sudo mkdir -p "$PIPX_HOME"
+sudo mkdir -p "$PIPX_BIN_DIR"
+pip install --force pipx
+pipx install --force git+https://github.com/yamaton/condax
 
 
 # condax
 export CONDAX_BIN_DIR=/opt/bin
 export CONDAX_PREFIX_DIR=/opt/share/condax/envs
 export CONDAX_HIDE_EXITCODE=1
-mkdir -p "$CONDAX_BIN_DIR"
-mkdir -p "$CONDAX_PREFIX_DIR"
-wget https://raw.githubusercontent.com/yamaton/test-binder/main/binder/_tools_condax.txt
+sudo mkdir -p "$CONDAX_BIN_DIR"
+sudo mkdir -p "$CONDAX_PREFIX_DIR"
+wget -N https://raw.githubusercontent.com/yamaton/test-binder/main/binder/_tools_condax.txt
 
 CONDAX_LOG="condax_install_log.txt"
 TOOLS=( "$(cat _tools_condax.txt)" )
@@ -91,36 +105,36 @@ done
 condax inject -c bioconda -n bandage blast
 
 # qiime2
-wget https://data.qiime2.org/distro/core/qiime2-2023.7-py38-linux-conda.yml -O qiime2.yml
+wget -N https://data.qiime2.org/distro/core/qiime2-2023.7-py38-linux-conda.yml -O qiime2.yml
 condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
 rm -f qiime2.yml
 mamba clean --all --yes --force-pkgs-dirs
 
 
 # R and RStudio
-sudo amazon-linux-extras install R3.4
+sudo amazon-linux-extras install -y R3.4
 sudo yum install -y R
-wget https://download1.rstudio.org/electron/centos7/x86_64/rstudio-2023.09.1-494-x86_64.rpm -O rstudio.rpm
+wget -N https://download1.rstudio.org/electron/centos7/x86_64/rstudio-2023.09.1-494-x86_64.rpm -O rstudio.rpm
 sudo yum localinstall rstudio.rpm -y
 
 
 ## Add application icons
 # Bandage icon
-wget https://raw.githubusercontent.com/rrwick/Bandage/main/images/application.ico
+wget -N https://raw.githubusercontent.com/rrwick/Bandage/main/images/application.ico
 convert application.ico bandage.png
 rm -f application.ico
-sudo cp bandage-0.png /tmp/icons
+sudo cp -f bandage-0.png /tmp/icons
 
 # IGV icon
-wget https://raw.githubusercontent.com/igvteam/igv/master/resources/IGV_64.ico
+wget -N https://raw.githubusercontent.com/igvteam/igv/master/resources/IGV_64.ico
 convert IGV_64.ico igv.png
-sudo mv igv.png /tmp/icons
+sudo cp -f igv.png /tmp/icons
 rm -f IGV_64.ico
 
 
 ## Add applications to the Gnome desktop database
-sudo cp "$BASEDIR/bandage.desktop" /usr/share/applications/
-sudo cp "$BASEDIR/igv.desktop" /usr/share/applications/
+sudo cp -f "$BASEDIR/bandage.desktop" /usr/share/applications/
+sudo cp -f "$BASEDIR/igv.desktop" /usr/share/applications/
 sudo update-desktop-database
 
 
@@ -129,15 +143,15 @@ sudo update-desktop-database
 ## Setup dotfiles in /etc/skel
 
 # .profile
-sudo cp "$BASEDIR/profile.sh" /etc/skel/.profile
+sudo cp -f "$BASEDIR/profile.sh" /etc/skel/.profile
 
 
 # .bash_logout
-sudo cp "$BASEDIR/bash_logout" /etc/skel/.bash_logout
+sudo cp -f "$BASEDIR/bash_logout" /etc/skel/.bash_logout
 
 
 # zsh
-sudo cp "$BASEDIR/zshrc" /etc/skel/.zshrc
+sudo cp -f "$BASEDIR/zshrc" /etc/skel/.zshrc
 zshdir=configs/zsh
 mkdir -p "$zshdir"
 pushd "$zshdir" || return
@@ -187,7 +201,7 @@ echo "use_lockfiles: false" | sudo tee /etc/skel/.mambarc
 
 
 # .less_termcap
-wget https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
-sudo mv .less_termcap /etc/skel/
+wget -N https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
+sudo cp -f .less_termcap /etc/skel/
 
 ## <<<<------------------------------------------------------------------------
