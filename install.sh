@@ -67,7 +67,7 @@ sudo cp -f "$BASEDIR/myenvvars.sh" /etc/profile.d/
 
 
 # Basic python packages via mamba
-sudo mamba install -p "$CONDA_PREFIX" ipython numpy pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab -y
+sudo "$CONDA_PREFIX"/bin/mamba install -p "$CONDA_PREFIX" ipython numpy pandas matplotlib seaborn scikit-learn scikit-image scipy jupyterlab -y
 
 
 # pipx
@@ -75,8 +75,8 @@ export PIPX_HOME=/opt/share/pipx
 export PIPX_BIN_DIR=/opt/bin
 sudo mkdir -p "$PIPX_HOME"
 sudo mkdir -p "$PIPX_BIN_DIR"
-sudo pip install --prefix "$CONDA_PREFIX" --force pipx
-sudo pipx install --force git+https://github.com/yamaton/condax
+sudo "$CONDA_PREFIX"/bin/pip install --prefix "$CONDA_PREFIX" --force pipx
+sudo "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/condax
 
 
 # condax
@@ -92,22 +92,22 @@ TOOLS=( "$(cat _tools_condax.txt)" )
 for _tool in ${TOOLS[*]}; do
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
     # retry if nonzero exit status occurs
-    if [[ ! ($(sudo condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG")) ]]; then
+    if [[ ! ($(sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG")) ]]; then
         echo "condax retrying... $_tool" | tee -a "$CONDAX_LOG"
-        sudo condax remove "$_tool" | tee -a "$CONDAX_LOG"
-        sudo condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
+        sudo /opt/bin/condax remove "$_tool" | tee -a "$CONDAX_LOG"
+        sudo /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"
     fi
-    sudo mamba clean --all --yes --force-pkgs-dirs
+    sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 done
 
 # Add blast to bandage package
-sudo condax inject -c bioconda -n bandage blast
+sudo /opt/bin/condax inject -c bioconda -n bandage blast
 
 # qiime2
 wget -N https://data.qiime2.org/distro/core/qiime2-2023.7-py38-linux-conda.yml -O qiime2.yml
-sudo condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
+sudo /opt/bin/condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
 rm -f qiime2.yml
-sudo mamba clean --all --yes --force-pkgs-dirs
+sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 
 
 # R and RStudio
