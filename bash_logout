@@ -28,4 +28,5 @@ else
 fi
 
 # Sync dotfiles and directories, excluding symbolic links
-rsync -av --no-links --include='.*' --exclude='*' "$source_dir"/ "$target_dir"
+# Be careful to avoid self-reference loop
+rsync -av --no-links --include='.*' --exclude='/MyFiles/' --exclude='*' "$source_dir"/ "$target_dir"
