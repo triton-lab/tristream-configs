@@ -16,11 +16,7 @@ alias ll='ls -alFh'
 
 alias mv="mv -i"
 alias cp="cp -i"
-if [[ "$(command -v trash)" ]]; then
-    alias rm=trash
-else
-    alias rm="rm -i"
-fi
+alias rm="rm -i"
 alias mkdir="mkdir -p"
 
 [[ "$(command -v nvim)" ]] && alias vim=nvim
