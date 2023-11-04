@@ -45,7 +45,7 @@ for item in .*; do
 
   # sync with the persistent user data storage
   # [NOTE] prefer copy over symbolic ink because the persitent storage is not always available
-  rsync -av --no-links --update --include='.*' --exclude='*' "$source_path"/ "$target_path"
+  rsync -av --no-links --update --include='.*' --include='.*/**' --exclude='*' "$source_path"/ "$target_path"
 
 done
 
