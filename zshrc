@@ -203,9 +203,9 @@ PS1="$(echo "$PS1" | sed 's/(base) //')"
 
 
 # cd to ~/MyFiles/HomeFolder as its the persistent home folder
-if [[ -d "$HOME/MyFiles/HomeFolder" ]]; then
-    owner=$(stat -c '%U' "$HOME/MyFiles/HomeFolder/")
-    if [ "$owner" = "as2-streaming-user" ]; then
-        cd "$HOME/MyFiles/HomeFolder" || return
-    fi
-fi
+# if [[ -d "$HOME/MyFiles/HomeFolder" ]]; then
+#     owner=$(stat -c '%U' "$HOME/MyFiles/HomeFolder/")
+#     if [ "$owner" = "as2-streaming-user" ]; then
+#         cd "$HOME/MyFiles/HomeFolder" || return
+#     fi
+# fi
