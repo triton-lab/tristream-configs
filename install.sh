@@ -13,7 +13,7 @@ sudo yum install -y git wget curl htop vim emacs jq source-highlight ShellCheck 
 
 
 # Install fonts
-sudo yum install \
+sudo yum install -y \
   adobe-source-code-pro-fonts \
   google-noto-cjk-fonts \
   levien-inconsolata-fonts \
