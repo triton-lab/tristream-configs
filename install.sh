@@ -132,16 +132,18 @@ sudo yum localinstall rstudio.rpm -y
 
 
 ## Add application icons
+sudo mkdir -p /opt/share/icons
+
 # Bandage icon
 wget -N https://raw.githubusercontent.com/rrwick/Bandage/main/images/application.ico
 convert application.ico bandage.png
 rm -f application.ico
-sudo cp -f bandage-0.png /tmp/icons
+sudo cp -f bandage-0.png /opt/share/icons
 
 # IGV icon
 wget -N https://raw.githubusercontent.com/igvteam/igv/master/resources/IGV_64.ico
 convert IGV_64.ico igv.png
-sudo cp -f igv.png /tmp/icons
+sudo cp -f igv.png /opt/share/icons
 rm -f IGV_64.ico
 
 

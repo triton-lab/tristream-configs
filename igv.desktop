@@ -2,6 +2,6 @@
 Type=Application
 Name=IGV
 Exec=/opt/bin/igv
-Icon=/tmp/icons/igv.png
+Icon=/opt/share/icons/igv.png
 Terminal=false
 Categories=Utility;
