@@ -12,7 +12,7 @@ readonly NAME=zoxide
 VERSION="$(curl --silent https://formulae.brew.sh/api/formula/${NAME}.json | jq -r '.versions.stable')"
 readonly VERSION
 
-BINDIR=/etc/skel/.local/bin
+BINDIR=/opt/bin
 readonly BINDIR
 sudo mkdir "$BINDIR"
 

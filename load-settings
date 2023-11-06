@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Limit to as2-streaming-user
+if [ "$HOME" != "/home/as2-streaming-user" ]; then
+  echo "Home: $HOME"
+  exit 1
+fi
+
+
+# Create conda environment directories
+mkdir -p "$HOME/.local/share/conda/envs"
+mkdir -p "$HOME/.local/share/conda/pkgs"
+
+
+# Load dotfiles from the persistent storage
+# Define the source and target directories
+source_dir="$HOME/MyFiles/HomeFolder/configs"
+target_dir="$HOME"
+
+# Ensure the source directory exists
+if [ ! -d "$source_dir" ]; then
+  echo "Source directory does not exist: $source_dir"
+  exit 1
+fi
+
+# Change to the source directory
+if [ ! -d "$target_dir" ]; then
+  echo "Target directory does not exist: $target_dir"
+  exit 1
+fi
+
+# sync with the persistent user data storage
+# [NOTE] prefer copy over symbolic ink because the persitent storage is not always available
+rsync -av --no-links --update --include='.*' --include='.*/**' --exclude='*' "$source_dir"/ "$target_dir"
+
+echo "Symbolic links created successfully!"
+

@@ -13,7 +13,7 @@ readonly CMD=tldr
 VERSION="$(curl --silent https://formulae.brew.sh/api/formula/${NAME}.json | jq -r '.versions.stable')"
 readonly VERSION
 
-BINDIR=/etc/skel/.local/bin
+BINDIR=/opt/bin
 readonly BINDIR
 
 CONFDIR=/etc/skel/.config

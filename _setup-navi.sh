@@ -12,7 +12,7 @@ readonly CMD=navi
 VERSION="$(curl --silent https://formulae.brew.sh/api/formula/${CMD}.json | jq -r '.versions.stable')"
 readonly VERSION
 
-BINDIR=/etc/skel/.local/bin
+BINDIR=/opt/bin
 readonly BINDIR
 
 mkdircp () {
