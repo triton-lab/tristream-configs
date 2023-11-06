@@ -29,4 +29,11 @@ fi
 
 # Sync dotfiles and directories, excluding symbolic links
 # Be careful to avoid self-reference loop
-rsync -av --no-links --include='.*' --include='.*/**' --exclude='/MyFiles/' --exclude='*' "$source_dir"/ "$target_dir"
+rsync -av --no-links \
+  --include='.*' --include='.*/**' \
+  --exclude='/MyFiles/' \
+  --exclude='.aws' --exclude='.cache' --exclude='.dbus' --exclude='.fzf' --exclude='.pki' \
+  --exclude='.config/zsh' --exclude='.config/fish' \
+  --exclude='.d/zsh' --exclude='.config/fish' \
+  --exclude='*' \
+  "$source_dir"/ "$target_dir"
