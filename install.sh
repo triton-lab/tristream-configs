@@ -4,6 +4,8 @@ set -o errexit
 set -o pipefail
 
 
+BINDIR=/opt/bin
+
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 readonly BASEDIR
 
@@ -72,7 +74,7 @@ sudo "$CONDA_PREFIX"/bin/mamba install -y -p "$CONDA_PREFIX" numpy ipython panda
 
 # pipx
 export PIPX_HOME=/opt/share/pipx
-export PIPX_BIN_DIR=/opt/bin
+export PIPX_BIN_DIR="$BINDIR"
 sudo mkdir -p "$PIPX_HOME"
 sudo mkdir -p "$PIPX_BIN_DIR"
 sudo "$CONDA_PREFIX"/bin/pip install --prefix "$CONDA_PREFIX" --force-reinstall pipx
@@ -80,7 +82,7 @@ sudo -E "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/
 
 
 # condax
-export CONDAX_BIN_DIR=/opt/bin
+export CONDAX_BIN_DIR="$BINDIR"
 export CONDAX_PREFIX_DIR=/opt/share/condax/envs
 sudo mkdir -p "$CONDAX_BIN_DIR"
 sudo mkdir -p "$CONDAX_PREFIX_DIR"
@@ -95,14 +97,14 @@ for _tool in ${TOOLS[*]}; do
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
     while [ $attempt_num -le $max_attempts ]; do
         echo "Attempt $attempt_num of $max_attempts: Installing $_tool"
-        if sudo -E /opt/bin/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"; then
+        if sudo -E "$BINDIR"/condax install -c conda-forge -c bioconda --force "$_tool" 2>&1 | tee -a "$CONDAX_LOG"; then
             echo "Installation succeeded: $_tool" | tee -a "$CONDAX_LOG"
             break
         else
             echo "Installation failed: $_tool" | tee -a "$CONDAX_LOG"
             if [ $attempt_num -eq $max_attempts ]; then
                 echo "👎👎👎Max attempts reached. Giving up: $_tool" | tee -a "$CONDAX_LOG"
-                sudo -E /opt/bin/condax remove 2>&1 | tee -a "$CONDAX_LOG"
+                sudo -E "$BINDIR"/condax remove 2>&1 | tee -a "$CONDAX_LOG"
             else
                 echo "Retrying in 5 seconds...: $_tool" | tee -a "$CONDAX_LOG"
                 sleep 5
@@ -111,15 +113,15 @@ for _tool in ${TOOLS[*]}; do
         attempt_num=$((attempt_num + 1))
     done
     sudo -E "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
-    sudo -E /opt/bin/micromamba clean --all --yes --force-pkgs-dirs
+    sudo -E "$BINDIR"/micromamba clean --all --yes --force-pkgs-dirs
 done
 
 # Add blast to bandage package
-sudo -E /opt/bin/condax inject -c bioconda -n bandage blast
+sudo -E "$BINDIR"/condax inject -c bioconda -n bandage blast
 
 # qiime2
 wget -N https://data.qiime2.org/distro/core/qiime2-2023.7-py38-linux-conda.yml -O qiime2.yml
-sudo -E /opt/bin/condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
+sudo -E "$BINDIR"/condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
 rm -f qiime2.yml
 sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 
@@ -170,12 +172,12 @@ done
 
 SKEL="/etc/skel"
 
-# .profile
-sudo cp -f "$BASEDIR/profile" "$SKEL/.profile"
-
-
-# .bash_logout
-sudo cp -f "$BASEDIR/bash_logout" "$SKEL/.bash_logout"
+## Put tools on the Desktop for loading and saving settings
+sudo mkdir -p "$SKEL/Desktop"
+sudo cp -f "BASEDIR/load-settings.desktop" "$SKEL/Desktop/"
+sudo cp -f "BASEDIR/save-settings.desktop" "$SKEL/Desktop/"
+sudo cp -f "$BASEDIR/load-settings" "$BINDIR"
+sudo cp -f "$BASEDIR/save-settings" "$BINDIR"
 
 
 # zsh
@@ -236,12 +238,19 @@ sudo cp -f .less_termcap "$SKEL"
 # Install vscode extensions and copy configs to /etc/skel
 ./vscode-extensions.sh
 
-
-# Copy gnome-terminal configs to /etc/skel
-sudo rm -rf "$SKEL/.gconf/apps/gnome-terminal"
-sudo cp -rf "$HOME/.gconf/apps/gnome-terminal" "$SKEL/.gconf/apps"
-
-
 ## <<<<------------------------------------------------------------------------
 
-echo "Done."
+
+echo "Finished ... for now."
+echo "-----------------------------------------------"
+echo "Now, launch Gnome Tweak and enable Desktop icon."
+echo "Then, copy the configuration files to the persistent storage."
+echo ""
+echo "sudo cp -f ~/.config/dconf/user /etc/skel/.config/dconf/"
+
+printf "\n\n"
+echo "-----------------------------------------------"
+echo "Launch firefox and add extensions."
+echo "Then, copy the configuration files to the persistent storage."
+echo ""
+echo "sudo cp -rf ~/.mozilla /etc/skel/"
