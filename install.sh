@@ -153,6 +153,17 @@ sudo cp -f "$BASEDIR/igv.desktop" /usr/share/applications/
 sudo update-desktop-database
 
 
+# Add extra CLI tools
+APPS=(tealdeer zoxide croc ffsend navi tre)
+for app in ${APPS[*]}; do
+    echo ""
+    echo "--------------------------"
+    echo "        ${app}"
+    echo "--------------------------"
+    "./_setup-${app}.sh" -f
+done
+
+
 
 ## >>>>------------------------------------------------------------------------
 ## Setup dotfiles in /etc/skel
@@ -218,6 +229,16 @@ echo "use_lockfiles: false" | sudo tee /etc/skel/.mambarc
 # .less_termcap
 wget -N https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
 sudo cp -f .less_termcap /etc/skel/
+
+
+# Install vscode extensions and copy configs to /etc/skel
+./vscode-extensions.sh
+
+
+# Copy gnome-terminal configs to /etc/skel
+sudo rm -rf /etc/skel/.gconf/apps/gnome-terminal
+
+
 
 ## <<<<------------------------------------------------------------------------
 

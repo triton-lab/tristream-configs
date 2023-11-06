@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/opt/bin/load-dotfiles.sh
+Name=Load dotfiles
+Comment=Load dotfiles from persistent storage
+Icon=utilities-terminal
+Categories=Application;
