@@ -45,9 +45,9 @@ if [[ "${1-}" == "-f" ]] || [[ ! "$(command -v ${CMD})" ]] || [[ "$confirm" == [
         sudo mv croc "$BINDIR"
         rm -rf "$FILE"
         rm -f README.md LICENSE
-        mkdir -p "$CONFDIR/bash_completion"
-        mkdir -p "$CONFDIR/zsh/completions"
-        mv bash_autocomplete "$CONFDIR/bash_completion/croc"
-        mv zsh_autocomplete "$CONFDIR/zsh/_croc"
+        sudo mkdir -p "$CONFDIR/bash_completion"
+        sudo mkdir -p "$CONFDIR/zsh/completions"
+        sudo mv bash_autocomplete "$CONFDIR/bash_completion/croc"
+        sudo mv zsh_autocomplete "$CONFDIR/zsh/_croc"
     fi
 fi

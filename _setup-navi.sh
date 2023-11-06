@@ -42,7 +42,7 @@ if [[ "${1-}" == "-f" ]] || [[ ! "$(command -v ${CMD})" ]] || [[ "$confirm" == [
         readonly FILE
         tar -xvf "$FILE"
         sudo mkdir -p "$BINDIR"
-        mv -f "$CMD" "$BINDIR"
+        sudo mv -f "$CMD" "$BINDIR"
         rm -rf "$FILE"
     fi
 fi

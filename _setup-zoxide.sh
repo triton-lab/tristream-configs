@@ -14,7 +14,7 @@ readonly VERSION
 
 BINDIR=/opt/bin
 readonly BINDIR
-sudo mkdir "$BINDIR"
+sudo mkdir -p "$BINDIR"
 
 MANDIR=/etc/skel/.local/share/man
 readonly MANDIR
@@ -45,11 +45,11 @@ if [[ "${1-}" == "-f" ]] || [[ ! "$(command -v ${NAME})" ]] || [[ "$confirm" == 
         mkdir -p "$DIRNAME"
         tar -xvf "$FILE" --directory "$DIRNAME"
         rm -f "$FILE"
-        mv -f "${DIRNAME}/${NAME}" "$BINDIR"
+        sudo mv -f "${DIRNAME}/${NAME}" "$BINDIR"
 
         # save man files
         sudo mkdir -p "$MANDIR/man1"
-        mv "${DIRNAME}"/man/man1/*.1 "$MANDIR/man1"
+        sudo mv "${DIRNAME}"/man/man1/*.1 "$MANDIR/man1"
         mandb "$MANDIR/man1"
         rm -rf "$DIRNAME"
     fi
