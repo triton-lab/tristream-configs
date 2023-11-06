@@ -186,6 +186,8 @@ sudo cp -rf configs/* "$SKEL/.config"
 
 
 # fish
+sudo mkdir -p "$SKEL/.config/fish"
+sudo cp -f "$BASEDIR/config.fish" "$SKEL/.config/fish/config.fish"
 fishcompdir=configs/fish/completions
 mkdir -p "$fishcompdir"
 pushd "$fishcompdir" || return
@@ -194,6 +196,9 @@ pushd "$fishcompdir" || return
 popd || return
 sudo mkdir -p "$SKEL/.config/fish"
 
+
+# bash
+sudo cp -f "$BASEDIR/bashrc" "$SKEL/.bashrc"
 
 
 # .condarc
