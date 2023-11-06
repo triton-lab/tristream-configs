@@ -46,3 +46,8 @@ if [[ "${1-}" == "-f" ]] || [[ ! "$(command -v ${CMD})" ]] || [[ "$confirm" == [
         rm -rf "$FILE"
     fi
 fi
+
+echo "==================IMPORTANT==================="
+echo "After installing navi, launch it and choose data sources to download."
+echo "Then copy config files to the persistent directory:"
+echo "sudo cp -rf ~/.local/share/navi /etc/skel/.local/share/"

@@ -250,13 +250,23 @@ done
 
 
 echo "Finished ... for now."
+
+echo "-----------------------------------------------"
+echo "Launch Terminal and set color scheme and fonts."
+echo "Then, copy the configuration files to the persistent storage."
+echo ""
+echo "sudo cp -f ~/.config/dconf/user /etc/skel/.config/dconf/user"
+
+printf "\n\n"
+
 echo "-----------------------------------------------"
 echo "Now, launch Gnome Tweak and enable Desktop icon."
 echo "Then, copy the configuration files to the persistent storage."
 echo ""
-echo "sudo cp -f ~/.config/dconf/user /etc/skel/.config/dconf/"
+echo "sudo cp -f ~/.config/dconf/user /etc/skel/.config/dconf/user"
 
 printf "\n\n"
+
 echo "-----------------------------------------------"
 echo "Launch firefox and add extensions."
 echo "Then, copy the configuration files to the persistent storage."
