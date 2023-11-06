@@ -13,7 +13,7 @@ sudo yum upgrade -y
 
 
 # Install essentials
-sudo yum install -y git zsh fish wget curl htop vim emacs jq source-highlight ShellCheck cmake rclone ImageMagick
+sudo yum install -y git zsh fish wget curl htop vim emacs jq source-highlight ShellCheck cmake rclone ImageMagick gnome-tweaks-tool
 
 
 # Install fonts

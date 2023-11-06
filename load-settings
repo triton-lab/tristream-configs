@@ -31,7 +31,7 @@ fi
 
 # sync with the persistent user data storage
 # [NOTE] prefer copy over symbolic ink because the persitent storage is not always available
-rsync -av --no-links --update --include='.*' --include='.*/**' --exclude='*' "$source_dir"/ "$target_dir"
+rsync -avP --no-links --update --include='.*' --include='.*/**' --exclude='*' "$source_dir"/.??* "$target_dir"
 
 echo "Symbolic links created successfully!"
 

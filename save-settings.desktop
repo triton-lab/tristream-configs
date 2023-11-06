@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Terminal=true
-Exec=/opt/bin/save-dotfiles
-Name=Save dotfiles
-Comment=Save dotfiles to persistent storage
+Exec=/opt/bin/save-settings
+Name=Save settings
+Comment=Save settings to persistent storage
 Icon=utilities-terminal
 Categories=Application;
