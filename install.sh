@@ -155,17 +155,6 @@ sudo cp -f "$BASEDIR/igv.desktop" /usr/share/applications/
 sudo update-desktop-database
 
 
-# Add extra CLI tools
-APPS=(tealdeer zoxide fzf croc ffsend navi tre)
-for app in ${APPS[*]}; do
-    echo ""
-    echo "--------------------------"
-    echo "        ${app}"
-    echo "--------------------------"
-    "./_setup-${app}.sh" -f
-done
-
-
 
 ## >>>>------------------------------------------------------------------------
 ## Setup dotfiles in /etc/skel
@@ -237,6 +226,25 @@ sudo cp -f .less_termcap "$SKEL"
 
 # Install vscode extensions and copy configs to /etc/skel
 ./vscode-extensions.sh
+
+
+# Add extra CLI tools
+
+# via conda-forge
+CONDAX_EXTRA_APPS=(hyperfine fzf)
+for app in ${CONDAX_EXTRA_APPS[*]}; do
+    sudo -E "$BINDIR"/condax install --force "$app"
+done
+
+# via direct installation
+APPS=(tealdeer zoxide croc ffsend navi tre)
+for app in ${APPS[*]}; do
+    echo ""
+    echo "--------------------------"
+    echo "        ${app}"
+    echo "--------------------------"
+    "./_setup-${app}.sh" -f
+done
 
 ## <<<<------------------------------------------------------------------------
 
