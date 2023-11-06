@@ -47,5 +47,10 @@ if [[ "${1-}" == "-f" ]] || [[ ! "$(command -v ${CMD})" ]] || [[ "$confirm" == [
         sudo mkdir -p "$CONFDIR/tealdeer"
         wget -cN "https://raw.githubusercontent.com/yamaton/dotfiles/master/.config/tealdeer/config.toml"
         sudo mv config.toml "$CONFDIR/tealdeer"
+
+        # Create cache
+        sudo mkdir -p /etc/skel/.cache
+        tldr --update
+        sudo cp -rf ~/.cache/tealdeer /etc/skel/.cache
     fi
 fi
