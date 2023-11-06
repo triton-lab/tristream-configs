@@ -147,7 +147,7 @@ wget -N https://raw.githubusercontent.com/igvteam/igv/master/resources/IGV_64.ic
 convert IGV_64.ico igv.png
 sudo cp -f igv.png /opt/share/icons
 rm -f IGV_64.ico
-
+sudo cp -f igv.png /opt/share/icons
 
 ## Add applications to the Gnome desktop database
 sudo cp -f "$BASEDIR/bandage.desktop" /usr/share/applications/
