@@ -154,7 +154,7 @@ sudo update-desktop-database
 
 
 # Add extra CLI tools
-APPS=(tealdeer zoxide croc ffsend navi tre)
+APPS=(tealdeer zoxide fzf croc ffsend navi tre)
 for app in ${APPS[*]}; do
     echo ""
     echo "--------------------------"
@@ -168,16 +168,18 @@ done
 ## >>>>------------------------------------------------------------------------
 ## Setup dotfiles in /etc/skel
 
+SKEL="/etc/skel"
+
 # .profile
-sudo cp -f "$BASEDIR/profile" /etc/skel/.profile
+sudo cp -f "$BASEDIR/profile" "$SKEL/.profile"
 
 
 # .bash_logout
-sudo cp -f "$BASEDIR/bash_logout" /etc/skel/.bash_logout
+sudo cp -f "$BASEDIR/bash_logout" "$SKEL/.bash_logout"
 
 
 # zsh
-sudo cp -f "$BASEDIR/zshrc" /etc/skel/.zshrc
+sudo cp -f "$BASEDIR/zshrc" "$SKEL/.zshrc"
 zshdir=configs/zsh
 mkdir -p "$zshdir"
 pushd "$zshdir" || return
@@ -187,8 +189,8 @@ pushd "$zshdir" || return
     git clone --depth 1 https://github.com/yamaton/zsh-completions-bio
     git clone --depth 1 https://github.com/yamaton/zsh-completions-extra
 popd || return
-sudo mkdir -p /etc/skel/.config
-sudo cp -rf configs/* /etc/skel/.config
+sudo mkdir -p "$SKEL/.config"
+sudo cp -rf configs/* "$SKEL/.config"
 
 
 
@@ -199,14 +201,14 @@ pushd "$fishcompdir" || return
     git clone --depth 1 https://github.com/yamaton/fish-completions-bio
     git clone --depth 1 https://github.com/yamaton/fish-completions-extra
 popd || return
-sudo mkdir -p /etc/skel/.config/fish
+sudo mkdir -p "$SKEL/.config/fish"
 
 
 
 # .condarc
 #   Enable users to install conda environments
 #   [NOTE] Add after system-wide conda/mamba installation
-cat << 'EOF' | sudo tee /etc/skel/.condarc
+cat << 'EOF' | sudo tee "$SKEL/.condarc"
 channels:
   - bioconda
   - conda-forge
@@ -223,12 +225,12 @@ EOF
 
 # .mambarc
 # Run this after miniforge installation
-echo "use_lockfiles: false" | sudo tee /etc/skel/.mambarc
+echo "use_lockfiles: false" | sudo tee "$SKEL/.mambarc"
 
 
 # .less_termcap
 wget -N https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
-sudo cp -f .less_termcap /etc/skel/
+sudo cp -f .less_termcap "$SKEL"
 
 
 # Install vscode extensions and copy configs to /etc/skel
@@ -236,8 +238,8 @@ sudo cp -f .less_termcap /etc/skel/
 
 
 # Copy gnome-terminal configs to /etc/skel
-sudo rm -rf /etc/skel/.gconf/apps/gnome-terminal
-
+sudo rm -rf "$SKEL/.gconf/apps/gnome-terminal"
+sudo cp -rf "$HOME/.gconf/apps/gnome-terminal" "$SKEL/.gconf/apps"
 
 
 ## <<<<------------------------------------------------------------------------
