@@ -48,6 +48,6 @@ if [[ "${1-}" == "-f" ]] || [[ ! "$(command -v ${CMD})" ]] || [[ "$confirm" == [
         sudo mkdir -p "$CONFDIR/bash_completion"
         sudo mkdir -p "$CONFDIR/zsh/completions"
         sudo mv bash_autocomplete "$CONFDIR/bash_completion/croc"
-        sudo mv zsh_autocomplete "$CONFDIR/zsh/_croc"
+        sudo mv zsh_autocomplete "$CONFDIR/zsh/completions/_croc"
     fi
 fi
