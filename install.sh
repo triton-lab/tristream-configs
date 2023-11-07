@@ -188,14 +188,16 @@ sudo cp -rf configs/* "$SKEL/.config"
 
 # fish
 sudo mkdir -p "$SKEL/.config/fish"
-sudo cp -f "$BASEDIR/config.fish" "$SKEL/.config/fish/config.fish"
 fishcompdir=configs/fish/completions
 mkdir -p "$fishcompdir"
 pushd "$fishcompdir" || return
     git clone --depth 1 https://github.com/yamaton/fish-completions-bio
     git clone --depth 1 https://github.com/yamaton/fish-completions-extra
 popd || return
-sudo mkdir -p "$SKEL/.config/fish"
+sudo cp -rf "$fishcompdir" "$SKEL/.config/fish"
+sudo cp -f "$BASEDIR/config.fish" "$SKEL/.config/fish/config.fish"
+sudo mkdir -p "$SKEL/.config/fish/functions"
+sudo cp -f "$BASEDIR/fish_prompt.fish" "$SKEL/.config/fish/functions"
 
 
 # bash
