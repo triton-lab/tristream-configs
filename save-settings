@@ -39,7 +39,6 @@ tar --exclude='.aws' \
     --exclude='.config/fish' \
     -czvf dotfiles.tar.gz \
     -C "$source_dir" \
-    --exclude='*/.cache/*' \
     $(find ~/ -name '.*' -print)
 
 mv -f dotfiles.tar.gz "$target_dir"
