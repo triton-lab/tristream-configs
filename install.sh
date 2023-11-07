@@ -15,7 +15,7 @@ sudo yum upgrade -y
 
 
 # Install essentials
-sudo yum install -y git zsh fish wget curl htop vim emacs jq source-highlight ShellCheck cmake rclone ImageMagick gnome-tweaks-tool
+sudo yum install -y wget curl vim emacs source-highlight gnome-tweaks-tool
 
 
 # Install fonts
@@ -124,6 +124,13 @@ wget -N https://data.qiime2.org/distro/core/qiime2-2023.7-py38-linux-conda.yml -
 sudo -E "$BINDIR"/condax install -c conda-forge -c bioconda --force --file qiime2.yml q2cli 2>&1 | tee -a "$CONDAX_LOG"
 rm -f qiime2.yml
 sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
+
+# extra tools via conda-forge
+CONDAX_EXTRA_APPS=(git zsh htop jq fish rclone shellcheck imagemagick hyperfine fzf cmake)
+for app in ${CONDAX_EXTRA_APPS[*]}; do
+    sudo -E "$BINDIR"/condax install --force "$app"
+done
+
 
 
 # R and RStudio
@@ -238,11 +245,6 @@ sudo cp -f .less_termcap "$SKEL"
 
 # Add extra CLI tools
 
-# via conda-forge
-CONDAX_EXTRA_APPS=(hyperfine fzf)
-for app in ${CONDAX_EXTRA_APPS[*]}; do
-    sudo -E "$BINDIR"/condax install --force "$app"
-done
 
 # via direct installation
 APPS=(tealdeer zoxide croc ffsend navi tre)
