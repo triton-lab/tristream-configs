@@ -29,12 +29,12 @@ sudo yum install -y \
 
 
 # Cascadia Code fonts
-FONT_PATH="/usr/share/fonts/CascadiaMono"
+FONT_PATH="/usr/share/fonts/CascadiaCode"
 if [ ! -d "$FONT_PATH" ]; then
   wget -N https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
   unzip -d CascadiaCode -o CascadiaCode-2111.01.zip
   sudo mkdir -p "$FONT_PATH"
-  sudo cp -f CascadiaCode/ttf/CascadiaMono*.ttf "$FONT_PATH"/
+  sudo cp -f CascadiaCode/ttf/static/CascadiaCode*.ttf "$FONT_PATH"/
   sudo fc-cache -f -
 fi
 
