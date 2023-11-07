@@ -24,8 +24,20 @@ code --install-extension mechatroner.rainbow-csv
 # ShellCheck
 code --install-extension timonwong.shellcheck
 
-# Shell Script Commands
+# Shell Script Command Completion
 code --install-extension tetradresearch.vscode-h2o
+
+# vscode-icons
+code --install-extension vscode-icons-team.vscode-icons
+
+# Trailing space
+code --install-extension shardulm94.trailing-spaces
+
+# Indent one space
+code --install-extension usernamehw.indent-one-space
+
+# Indent Rainbow
+code --install-extension oderwat.indent-rainbow
 
 
 # Copy extensions and configs to /etc/skel
