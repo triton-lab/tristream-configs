@@ -262,7 +262,7 @@ done
 echo "Finished ... for now."
 
 echo "-----------------------------------------------"
-echo "Launch Terminal and set color scheme and fonts."
+echo "Launch Terminal and set theme, font, and menu visibility."
 echo "Then, copy the configuration files to the persistent storage."
 echo ""
 echo "sudo cp -f ~/.config/dconf/user /etc/skel/.config/dconf/user"
