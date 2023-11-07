@@ -9,7 +9,7 @@ fi
 
 # Load dotfiles from the persistent storage
 # Define the source and target directories
-source_file="$HOME/MyFiles/HomeFolder/_configs/dotfiles.tar.gz"
+source_file="$HOME/MyFiles/HomeFolder/_configs/dotfiles.tar.zst"
 target_dir="$HOME"
 
 # Ensure the source directory exists
@@ -24,7 +24,7 @@ if [ ! -d "$target_dir" ]; then
   exit 1
 fi
 
-tar -xvf "$source_file" -C "$target_dir"
+zstd -c -d "$source_file" | tar -xf - -C "$target_dir"
 
 echo "Symbolic links created successfully!"
 

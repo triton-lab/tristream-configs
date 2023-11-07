@@ -37,8 +37,9 @@ tar --exclude='.aws' \
     --exclude='.pki' \
     --exclude='.config/zsh' \
     --exclude='.config/fish' \
-    -czvf dotfiles.tar.gz \
+    -cvf - \
     -C "$source_dir" \
-    $(find ~/ -name '.*' -print)
+    $(find ~/ -name '.*' -print) \
+    | zstd > dotfiles.tar.zst
 
-mv -f dotfiles.tar.gz "$target_dir"
+cp -f dotfiles.tar.zst "$target_dir"
