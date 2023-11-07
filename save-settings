@@ -7,7 +7,8 @@ if [ ! "$HOME" = "/home/as2-streaming-user" ]; then
 fi
 
 source_dir="$HOME"
-target_dir="$HOME/MyFiles/HomeFolder/configs"
+home_folder="$HOME/MyFiles/HomeFolder"
+target_dir="$home_folder/_configs"
 
 # Ensure source directory exists
 if [ ! -d "$source_dir" ]; then
@@ -16,10 +17,11 @@ if [ ! -d "$source_dir" ]; then
 fi
 
 # Ensure target directory exists
-if [ ! -d "$target_dir" ]; then
-  echo "Target directory does not exist: $target_dir" >&2
+if [ ! -d "$home_folder" ]; then
+  echo "Home Folder directory does not exist: $home_folder" >&2
   exit 1
 else
+  mkdir -p "$target_dir"
   owner=$(stat -c '%U' "$target_dir")
   if [ "$owner" = "root" ]; then
     echo "The owner of the target directory is root: $target_dir"
@@ -27,10 +29,17 @@ else
   fi
 fi
 
-# Sync dotfiles and directories, excluding symbolic links
-# Be careful to avoid self-reference loop
-rsync -avP --no-links \
-  --exclude='MyFiles' \
-  --exclude='.aws' --exclude='.cache' --exclude='.dbus' --exclude='.fzf' --exclude='.pki' \
-  --exclude='.config/zsh' --exclude='.config/fish' \
-  "$source_dir"/.??* "$target_dir"
+# [NOTE] saving configs as a tarball because access to the HomeDFolder is SLOW
+tar --exclude='.aws' \
+    --exclude='.cache' \
+    --exclude='.dbus' \
+    --exclude='.fzf' \
+    --exclude='.pki' \
+    --exclude='.config/zsh' \
+    --exclude='.config/fish' \
+    -czvf dotfiles.tar.gz \
+    -C "$source_dir" \
+    --exclude='*/.cache/*' \
+    $(find ~/ -name '.*' -print)
+
+mv -f dotfiles.tar.gz "$target_dir"
