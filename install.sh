@@ -171,6 +171,7 @@ sudo cp -f "$BASEDIR/save-settings" "$BINDIR"
 
 # zsh
 sudo cp -f "$BASEDIR/zshrc" "$SKEL/.zshrc"
+sudo cp -f "$BASEDIR/zshenv" "$SKEL/.zshenv"
 zshdir=configs/zsh
 mkdir -p "$zshdir"
 pushd "$zshdir" || return

@@ -13,8 +13,15 @@ alias cp="cp -i"
 alias rm="rm -i"
 alias mkdir="mkdir -p"
 
+# zoxide as replacement to autojump
+[[ "$(command -v zoxide)" ]] && alias j=z
+
+
 [[ "$(command -v nvim)" ]] && alias vim=nvim
 
+
+alias -s {txt,md,c,cc,cpp,tex,hs,fs,go,js,ts,css,htm,html}=code
+alias -s git="git clone"
 
 ## =======================================
 ##             ZSH config
