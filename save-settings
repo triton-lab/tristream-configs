@@ -17,8 +17,6 @@ def prepare_dotfiles(root: Path, exclusions: Set[Path]) -> Generator[Path, None,
 
     # Dig deeper into the directory tree and yield files that are not excluded.
     def _f(p: Path) -> Generator[Path, None, None]:
-        """
-        """
         if p in exclusions:
             return
 
@@ -31,7 +29,7 @@ def prepare_dotfiles(root: Path, exclusions: Set[Path]) -> Generator[Path, None,
             else:
                 yield p
 
-    for item in root.glob('.*'):
+    for item in root.glob(".*"):
         yield from _f(item)
 
 
@@ -52,10 +50,12 @@ def create_tarball(paths: Iterable[Path], name: str) -> None:
 
     # Compress the tarball using zstd
     compressed_tarball_name = f"{tarball_name}.zst"
-    with open(tarball_name, 'rb') as source_file:
-        with open(compressed_tarball_name, 'wb') as dest_file:
+    with open(tarball_name, "rb") as source_file:
+        with open(compressed_tarball_name, "wb") as dest_file:
             # Replace '3' with desired compression level
-            subprocess.run(["zstd", "-"], input=source_file.read(), stdout=dest_file, check=True)
+            subprocess.run(
+                ["zstd", "-"], input=source_file.read(), stdout=dest_file, check=True
+            )
 
     file_ = Path(tarball_name)
     file_.unlink()
@@ -66,25 +66,26 @@ def main() -> None:
     name = "dotfiles"
 
     exclusions = {
-        home / '.aws',
-        home / '.cache',
-        home / '.dbus',
-        home / '.fzf',
-        home / '.pki',
-        home / '.config' / 'Code' / 'Cache',
-        home / '.config' / 'Code' / 'CachedData',
-        home / '.config' / 'Code' / 'CachedProfilesData',
-        home / '.config' / 'Code' / 'Code Cache',
-        home / '.config' / 'Code' / 'code.lock',
-        home / '.config' / 'Code' / 'DawnCache',
-        home / '.config' / 'Code' / 'GPUCache',
-        home / '.config' / 'appstream-home-folder',
-        home / '.config' / 'zsh',
-        home / '.config' / 'fish' / 'completions',
+        home / ".aws",
+        home / ".cache",
+        home / ".dbus",
+        home / ".fzf",
+        home / ".pki",
+        home / ".config" / "Code" / "Cache",
+        home / ".config" / "Code" / "CachedData",
+        home / ".config" / "Code" / "CachedProfilesData",
+        home / ".config" / "Code" / "Code Cache",
+        home / ".config" / "Code" / "code.lock",
+        home / ".config" / "Code" / "DawnCache",
+        home / ".config" / "Code" / "GPUCache",
+        home / ".config" / "appstream-home-folder",
+        home / ".config" / "zsh",
+        home / ".config" / "fish" / "completions",
     }
 
     file_list = prepare_dotfiles(home, exclusions)
     create_tarball(file_list, name)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
