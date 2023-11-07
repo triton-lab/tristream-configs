@@ -1,45 +1,90 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-# Limit to as2-streaming-user
-if [ ! "$HOME" = "/home/as2-streaming-user" ]; then
-  echo "Home: $HOME"
-  exit 1
-fi
+import subprocess
+import tarfile
+from pathlib import Path
+from typing import Set, Iterable, Generator
 
-source_dir="$HOME"
-home_folder="$HOME/MyFiles/HomeFolder"
-target_dir="$home_folder/_configs"
 
-# Ensure source directory exists
-if [ ! -d "$source_dir" ]; then
-  echo "Source directory does not exist: $source_dir" >&2
-  exit 1
-fi
+def prepare_dotfiles(root: Path, exclusions: Set[Path]) -> Generator[Path, None, None]:
+    """
+    Prepare a list of dotfiles and directories excluding the given paths in `exclusions`.
 
-# Ensure target directory exists
-if [ ! -d "$home_folder" ]; then
-  echo "Home Folder directory does not exist: $home_folder" >&2
-  exit 1
-else
-  mkdir -p "$target_dir"
-  owner=$(stat -c '%U' "$target_dir")
-  if [ "$owner" = "root" ]; then
-    echo "The owner of the target directory is root: $target_dir"
-    exit 1
-  fi
-fi
+    :param home_directory: The home directory where to search for dotfiles
+    :param exclusions: A set of paths to excluded from the search
+    :return: A Generator of Paths
+    """
 
-# [NOTE] saving configs as a tarball because access to the HomeDFolder is SLOW
-tar --exclude='.aws' \
-    --exclude='.cache' \
-    --exclude='.dbus' \
-    --exclude='.fzf' \
-    --exclude='.pki' \
-    --exclude='.config/zsh' \
-    --exclude='.config/fish' \
-    -cvf - \
-    -C "$source_dir" \
-    $(find ~/ -name '.*' -print) \
-    | zstd > dotfiles.tar.zst
+    # Dig deeper into the directory tree and yield files that are not excluded.
+    def _f(p: Path) -> Generator[Path, None, None]:
+        """
+        """
+        if p in exclusions:
+            return
 
-cp -f dotfiles.tar.zst "$target_dir"
+        if p.is_file():
+            yield p
+        elif p.is_dir():
+            if any(excl.is_relative_to(p) for excl in exclusions):
+                for subitem in p.iterdir():
+                    yield from _f(subitem)
+            else:
+                yield p
+
+    for item in root.glob('.*'):
+        yield from _f(item)
+
+
+def create_tarball(paths: Iterable[Path], name: str) -> None:
+    """
+    Create a compressed tarball of the given list of files.
+
+    :param file_list: The list of files and directories to compress
+    :param tarball_name: The output name of the tarball file
+    :param home_directory: The home directory as the base for relative paths
+    """
+    tarball_name = f"{name}.tar"
+
+    # Create an uncompressed tarball
+    with tarfile.open(tarball_name, "w") as tar:
+        for path in paths:
+            tar.add(path, arcname=path.relative_to(Path.home()))
+
+    # Compress the tarball using zstd
+    compressed_tarball_name = f"{tarball_name}.zst"
+    with open(tarball_name, 'rb') as source_file:
+        with open(compressed_tarball_name, 'wb') as dest_file:
+            # Replace '3' with desired compression level
+            subprocess.run(["zstd", "-"], input=source_file.read(), stdout=dest_file, check=True)
+
+    file_ = Path(tarball_name)
+    file_.unlink()
+
+
+def main() -> None:
+    home = Path.home()
+    name = "dotfiles"
+
+    exclusions = {
+        home / '.aws',
+        home / '.cache',
+        home / '.dbus',
+        home / '.fzf',
+        home / '.pki',
+        home / '.config' / 'Code' / 'Cache',
+        home / '.config' / 'Code' / 'CachedData',
+        home / '.config' / 'Code' / 'CachedProfilesData',
+        home / '.config' / 'Code' / 'Code Cache',
+        home / '.config' / 'Code' / 'code.lock',
+        home / '.config' / 'Code' / 'DawnCache',
+        home / '.config' / 'Code' / 'GPUCache',
+        home / '.config' / 'appstream-home-folder',
+        home / '.config' / 'zsh',
+        home / '.config' / 'fish' / 'completions',
+    }
+
+    file_list = prepare_dotfiles(home, exclusions)
+    create_tarball(file_list, name)
+
+if __name__ == '__main__':
+    main()
