@@ -115,7 +115,7 @@ rm -f qiime2.yml
 sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 
 # extra tools via conda-forge
-CONDAX_EXTRA_APPS=(git zsh htop jq fish rclone shellcheck imagemagick hyperfine fzf cmake)
+CONDAX_EXTRA_APPS=(git zsh htop jq fish rsync rclone shellcheck imagemagick hyperfine fzf cmake)
 for app in ${CONDAX_EXTRA_APPS[*]}; do
     sudo -E "$BINDIR"/condax install --force "$app"
 done
@@ -218,9 +218,8 @@ sudo cp -f .less_termcap "$SKEL"
 # Install vscode extensions and copy configs to /etc/skel
 ./vscode-extensions.sh
 
-# Add extra CLI tools
 
-# via direct installation
+# Add extra CLI tools via direct installation
 APPS=(tealdeer zoxide croc ffsend navi tre)
 for app in ${APPS[*]}; do
     echo ""
