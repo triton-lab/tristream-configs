@@ -1,0 +1,13 @@
+git
+zsh
+htop
+jq
+fish
+rsync
+rclone
+shellcheck
+imagemagick
+hyperfine
+fzf
+cmake
+apptainer

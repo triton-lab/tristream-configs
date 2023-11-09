@@ -119,7 +119,7 @@ rm -f qiime2.yml
 sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 
 # extra tools via conda-forge
-CONDAX_EXTRA_APPS=(git zsh htop jq fish rsync rclone shellcheck imagemagick hyperfine fzf cmake)
+CONDAX_EXTRA_APPS=("$(cat "$BASEDIR/_tools_condax_extra.txt")")
 for app in ${CONDAX_EXTRA_APPS[*]}; do
     sudo -E "$BINDIR"/condax install --force "$app"
 done
