@@ -211,6 +211,17 @@ EOF
 # Run this after miniforge installation
 echo "use_lockfiles: false" | sudo tee "$SKEL/.mambarc"
 
+
+# RStudio
+sudo mkdir -p "$SKEL/.config/rstudio"
+cat <<'EOF' | sudo tee "$SKEL/.config/rstudio/rstudio-prefs.json"
+{
+    "initial_working_directory": "~",
+    "editor_theme": "Monokai",
+    "posix_terminal_shell": "zsh"
+}
+EOF
+
 # .less_termcap
 wget -N https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
 sudo cp -f .less_termcap "$SKEL"
