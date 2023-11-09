@@ -71,7 +71,7 @@ sudo "$CONDA_PREFIX"/bin/pip install --prefix "$CONDA_PREFIX" --force-reinstall 
 sudo -E "$CONDA_PREFIX"/bin/pipx install --force git+https://github.com/yamaton/condax
 
 # condax
-export CONDAX_BIN_DIR="$BINDIR"
+export CONDAX_BIN_DIR=/opt/bin
 export CONDAX_PREFIX_DIR=/opt/share/condax/envs
 sudo mkdir -p "$CONDAX_BIN_DIR"
 sudo mkdir -p "$CONDAX_PREFIX_DIR"
@@ -214,6 +214,11 @@ echo "use_lockfiles: false" | sudo tee "$SKEL/.mambarc"
 # .less_termcap
 wget -N https://raw.githubusercontent.com/yamaton/dotfiles/master/.less_termcap
 sudo cp -f .less_termcap "$SKEL"
+
+# .parallel
+sudo mkdir -p "$SKEL/.parallel"
+sudo touch "$SKEL/.parallel/will-cite"
+
 
 # Install vscode extensions and copy configs to /etc/skel
 ./vscode-extensions.sh
