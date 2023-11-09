@@ -33,23 +33,8 @@ set -a fish_complete_path ~/.config/fish/completions/fish-completions-bio/comple
 fish_add_path ~/.local/bin
 fish_add_path ~/bin
 
-# yarn
-fish_add_path ~/.yarn/bin
-
 # disable welcome message
 set -g fish_greeting
-
-# rust
-fish_add_path ~/.cargo/bin
-set -gx RUST_BACKTRACE 1
-
-# go
-if type -q go
-    fish_add_path (go env GOPATH)/bin
-end
-
-# dotnet tools
-fish_add_path ~/.dotnet/tools
 
 # cht.sh
 set -gx CHTSH $XDG_CONFIG_HOME/cht.sh
@@ -58,20 +43,6 @@ set -gx CHTSH $XDG_CONFIG_HOME/cht.sh
 if type -q zoxide
     zoxide init fish | source
 end
-
-# pipx, kitty, and other
-fish_add_path ~/.local/bin
-
-# ruby gems
-set -gx GEM_HOME ~/.gems
-fish_add_path ~/.gems/bin
-
-# npm
-fish_add_path ~/.local/bin/node/bin
-
-# deno
-set -gx DENO_INSTALL ~/.deno
-fish_add_path $DENO_INSTALL/bin
 
 # source-highlight in less
 set -gx HIGHLIGHT '/usr/share/source-highlight'
@@ -100,15 +71,6 @@ if [ "$TERM" = "xterm-kitty" ] && type -q kitty
     alias icat="kitty +kitten icat"
 end
 
-# ghcup
-fish_add_path ~/.ghcup/bin
-
-# nim
-fish_add_path ~/.nimble/bin
-
-
-set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH $HOME/.ghcup/bin # ghcup-env
-
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -120,16 +82,4 @@ if test -f "/opt/miniforge3/etc/fish/conf.d/mamba.fish"
     source "/opt/miniforge3/etc/fish/conf.d/mamba.fish"
 end
 # <<< conda initialize <<<
-
-
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'mamba init' !!
-set -gx MAMBA_EXE "/opt/miniforge3/bin/micromamba"
-set -gx MAMBA_ROOT_PREFIX "/opt/miniforge3"
-$MAMBA_EXE shell hook --shell fish --root-prefix $MAMBA_ROOT_PREFIX | source
-# <<< mamba initialize <<<
-
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
 
