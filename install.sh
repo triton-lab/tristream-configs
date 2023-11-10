@@ -45,6 +45,10 @@ if ! command -v code &>/dev/null; then
     sudo yum localinstall vscode.rpm -y
 fi
 
+# s3fs-fuse
+sudo amazon-linux-extras install epel -y
+sudo yum install -y s3fs-fuse
+
 # miniforge
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
 sudo mkdir -p /opt
