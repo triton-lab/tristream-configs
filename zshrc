@@ -146,7 +146,7 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%F{246}]%F{reset_color} "
 ZSH_THEME_GIT_PROMPT_SEPARATOR="%F{246}|%F{reset_color}"
 
 ## Custom Prompt
-PROMPT='${SSH_TTY:+"%F{green}%n%F{yellow}@%F{green}%m%F{reset_color} "}%F{green}%~%F{reset_color} $(git_super_status)%F{yellow}$%F{reset_color} '
+PROMPT='${SSH_TTY:+"%F{green}%n%F{yellow}@%F{green}%m%F{reset_color} "}%F{green}%~%{$(es=$?; if [[ $es != '0' ]]; then echo "%F{red} [$es]%F{reset_color}"; fi; unset es)%} $(git_super_status)%F{yellow}$%F{reset_color} '
 
 ## Colors on completion suggestions
 ## https://stackoverflow.com/questions/23152157/how-does-the-zsh-list-colors-syntax-work
