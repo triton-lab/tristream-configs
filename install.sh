@@ -8,6 +8,11 @@ BINDIR=/opt/bin
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 readonly BASEDIR
 
+# Enable EPEL repository
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/add-repositories.html
+sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
+sudo yum-config-manager --enable epel
+
 # Update
 sudo yum update -y
 sudo yum upgrade -y
@@ -46,7 +51,7 @@ if ! command -v code &>/dev/null; then
 fi
 
 # s3fs-fuse
-sudo amazon-linux-extras install epel -y
+# Need to enable epel
 sudo yum install -y s3fs-fuse
 
 # miniforge
