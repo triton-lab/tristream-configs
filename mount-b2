@@ -1,0 +1,36 @@
+#!/bin/bash
+
+DEFAULT_MOUNT_POINT="$HOME/myb2"
+
+# Zenity dialog for input
+FORM=$(zenity --forms \
+  --title="Mount B2 Bucket" --text="Enter your details" \
+  --add-entry="Key ID" \
+  --add-password="App Key" \
+  --add-entry="Bucket Name")
+
+# Exit if cancel is pressed
+[ $? -ne 0 ] && exit
+
+# Reading the input
+KEY_ID=$(awk -F'|' '{print $1}' <<< "$FORM")
+APP_KEY=$(awk -F'|' '{print $2}' <<< "$FORM")
+BUCKET_NAME=$(awk -F'|' '{print $3}' <<< "$FORM")
+
+# Use default mount point if none provided
+MOUNT_POINT=$DEFAULT_MOUNT_POINT
+
+# Main
+echo "$KEY_ID:$APP_KEY" > ~/.passwd-s3fs
+chmod 600 ~/.passwd-s3fs
+mkdir -p "$MOUNT_POINT"
+s3fs "$BUCKET_NAME" "$MOUNT_POINT" \
+  -o passwd_file=$HOME/.passwd-s3fs \
+  -o url=https://s3.us-west-004.backblazeb2.com
+
+# Check if mount was successful
+if mount | grep -q "$MOUNT_POINT"; then
+  zenity --info --text="Success! The B2 bucket ($BUCKET_NAME) has been successfully mounted at $MOUNT_POINT. You can now access your files in this directory."
+else
+  zenity --error --text="Mounting Failed. Please verify your Key ID, App Key, and Bucket Name are correct and try again."
+fi

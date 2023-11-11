@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=/opt/bin/mount-b2
+Name=Save settings
+Comment=Mount Backblaze B2 storage
+Icon=utilities-terminal
+Categories=Application;

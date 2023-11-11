@@ -156,12 +156,10 @@ sudo update-desktop-database
 
 SKEL="/etc/skel"
 
-## Put tools on the Desktop for loading and saving settings
+## Put tools on the Desktop for mounting B2 bucket
+sudo cp -f "$BASEDIR/mount-b2" "$BINDIR"
 sudo mkdir -p "$SKEL/Desktop"
-sudo cp -f "BASEDIR/load-settings.desktop" "$SKEL/Desktop/"
-sudo cp -f "BASEDIR/save-settings.desktop" "$SKEL/Desktop/"
-sudo cp -f "$BASEDIR/load-settings" "$BINDIR"
-sudo cp -f "$BASEDIR/save-settings" "$BINDIR"
+sudo cp -f "$BASEDIR/mount-b2.desktop" "$SKEL/Desktop"
 
 # zsh
 sudo cp -f "$BASEDIR/zshrc" "$SKEL/.zshrc"
