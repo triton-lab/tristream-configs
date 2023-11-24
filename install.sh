@@ -172,11 +172,11 @@ sudo cp -f "$BASEDIR/zshenv" "$SKEL/.zshenv"
 zshdir=configs/zsh
 mkdir -p "$zshdir"
 pushd "$zshdir" || return
-git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
-git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions
-git clone --depth 1 https://github.com/zsh-git-prompt/zsh-git-prompt
-git clone --depth 1 https://github.com/yamaton/zsh-completions-bio
-git clone --depth 1 https://github.com/yamaton/zsh-completions-extra
+git clone --depth 1 --branch master --single-branch https://github.com/zsh-users/zsh-syntax-highlighting
+git clone --depth 1 --branch master --single-branch https://github.com/zsh-users/zsh-autosuggestions
+git clone --depth 1 --branch master --single-branch https://github.com/zsh-git-prompt/zsh-git-prompt
+git clone --depth 1 --branch main --single-branch https://github.com/yamaton/zsh-completions-bio
+git clone --depth 1 --branch main --single-branch https://github.com/yamaton/zsh-completions-extra
 popd || return
 sudo mkdir -p "$SKEL/.config"
 sudo cp -rf configs/* "$SKEL/.config"
