@@ -151,6 +151,11 @@ sudo cp -f igv.png /opt/share/icons
 rm -f IGV_64.ico
 sudo cp -f igv.png /opt/share/icons
 
+
+# Backblaze B2
+wget -N https://www.podfeet.com/blog/wp-content/uploads/2017/08/backblaze_logo.png
+sudo cp -f backblaze_logo.png /opt/share/icons
+
 ## Add applications to the Gnome desktop database
 sudo cp -f "$BASEDIR/bandage.desktop" /usr/share/applications/
 sudo cp -f "$BASEDIR/igv.desktop" /usr/share/applications/

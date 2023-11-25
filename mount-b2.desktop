@@ -1,9 +1,8 @@
 [Desktop Entry]
 Name=Mount B2
-Version=1.0
 Type=Application
-Terminal=true
 Exec=/opt/bin/mount-b2
 Comment=Mount Backblaze B2 storage
-Icon=utilities-terminal
-Categories=Application;
+Icon=/opt/share/icons/backblaze_logo.png
+Terminal=false
+Categories=Utility;
