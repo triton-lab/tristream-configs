@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default mount point
-DEFAULT_MOUNT_POINT="$HOME/_work"
+DEFAULT_MOUNT_POINT="$HOME/myb2"
 mkdir -p "$DEFAULT_MOUNT_POINT"
 
 # YAD dialog for input
