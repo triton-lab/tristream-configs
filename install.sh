@@ -88,9 +88,9 @@ wget -N https://raw.githubusercontent.com/yamaton/test-binder/main/binder/_tools
 
 CONDAX_LOG="condax_install_log.txt"
 rm -f "$CONDAX_LOG"
-TOOLS=("$(cat _tools_condax.txt)")
+mapfile -t TOOLS < "$BASEDIR/_tools_condax.txt"
 max_attempts=3
-for _tool in ${TOOLS[*]}; do
+for _tool in "${TOOLS[@]}"; do
     attempt_num=1
     echo "Installing ${_tool}" | tee -a "$CONDAX_LOG"
     while [ $attempt_num -le $max_attempts ]; do
@@ -124,8 +124,8 @@ rm -f qiime2.yml
 sudo "$CONDA_PREFIX"/bin/mamba clean --all --yes --force-pkgs-dirs
 
 # extra tools via conda-forge
-CONDAX_EXTRA_APPS=("$(cat "$BASEDIR/_tools_condax_extra.txt")")
-for app in ${CONDAX_EXTRA_APPS[*]}; do
+mapfile -t CONDAX_EXTRA_APPS < "$BASEDIR/_tools_condax_extra.txt"
+for app in "${CONDAX_EXTRA_APPS[@]}"; do
     sudo -E "$BINDIR"/condax install --force "$app"
 done
 
@@ -249,7 +249,7 @@ sudo touch "$SKEL/.parallel/will-cite"
 
 # Add extra CLI tools via direct installation
 APPS=(tealdeer zoxide croc ffsend navi tre)
-for app in ${APPS[*]}; do
+for app in "${APPS[@]}"; do
     echo ""
     echo "--------------------------"
     echo "        ${app}"
